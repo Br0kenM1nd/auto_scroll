@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../file_page.dart';
-import 'home_controller.dart';
+import '../add_text_page.dart';
+import '../text_page.dart';
+import 'text_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,16 +21,18 @@ class HomePage extends StatelessWidget {
         () => ListView.builder(
           itemCount: c.userTexts.length,
           itemBuilder: (context, index) => ListTile(
-            title: Text(c.userTexts[index].title.split('/').last),
             onLongPress: () => c.removeFilePath(index),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => FilePage(c.userTexts[index]),
-              ),
-            ),
+            onTap: () => Get.to(() => TextPage(c.userTexts[index])),
+            title: Text(c.userTexts[index].title.split('/').last),
           ),
         ),
+      ),
+      floatingActionButton: IconButton(
+        style: const ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll(Colors.deepPurpleAccent),
+        ),
+        onPressed: () => Get.to(() => const AddTextPage()),
+        icon: const Icon(Icons.add),
       ),
     );
   }

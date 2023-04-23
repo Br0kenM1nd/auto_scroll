@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../entity/params.dart';
+
 class InfinityTextController extends GetxController {
   final int initSpeed;
   RxInt scrollSpeed = 1.obs;
@@ -15,7 +17,7 @@ class InfinityTextController extends GetxController {
     super.onInit();
     scrollController = ScrollController();
     scrollSpeed.value = initSpeed;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _delayedStart());
+    WidgetsBinding.instance.addPostFrameCallback(_delayedStart);
   }
 
   @override
@@ -25,38 +27,36 @@ class InfinityTextController extends GetxController {
   }
 
   void increaseSpeed() {
-
+    scrollSpeed.value++;
+    Params.speed++;
   }
 
   void decreaseSpeed() {
-
+    if (scrollSpeed.value < 2) return;
+    scrollSpeed.value--;
+    Params.speed--;
   }
 
-  void _delayedStart() async {
-    await Future.delayed(const Duration(milliseconds: 100));
-    _scroll();
+  void _delayedStart(_) {
+    Future.delayed(const Duration(milliseconds: 100)).then((_) => _scroll());
   }
 
   void scrollSwitch() {
-    isScroll.value = !isScroll.value;
-    if (isScroll.value) _scroll();
+    if (isScroll.value = !isScroll.value) _scroll();
   }
 
   void _scroll() async {
     while (isScroll.value) {
-      await Future.delayed(const Duration(milliseconds: 100));
-      if (scrollController.hasClients &&
-          scrollController.position.maxScrollExtent > 0 &&
-          scrollController.position.maxScrollExtent.isFinite) {
-        scrollController.animateTo(
+      final maxExtent = scrollController.position.maxScrollExtent;
+      if (scrollController.hasClients && maxExtent > 0 && maxExtent.isFinite) {
+        await scrollController.animateTo(
           scrollController.position.maxScrollExtent,
-          duration: Duration(
-            seconds:
-                scrollController.position.maxScrollExtent ~/ scrollSpeed.value,
-          ),
+          duration: Duration(seconds: maxExtent ~/ scrollSpeed.value),
           curve: Curves.linear,
         );
       }
+      // Check the value of isScroll every 100 milliseconds.
+      await Future.delayed(const Duration(milliseconds: 100));
     }
   }
 }

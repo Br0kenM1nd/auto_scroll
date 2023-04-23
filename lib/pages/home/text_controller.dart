@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_scroll/entity/params.dart';
@@ -10,7 +9,6 @@ import '../../entity/user_text.dart';
 
 class HomeController extends GetxController {
   final box = GetStorage();
-  final filePaths = <String>[].obs;
   final userTexts = <UserText>[].obs;
 
   @override
@@ -20,21 +18,15 @@ class HomeController extends GetxController {
   }
 
   Future<void> _loadFilePaths() async {
-    final paths = await box.read('filePaths');
-    final rawTexts = await box.read('userTexts');
-    final texts = [];
-    for (final e in rawTexts) texts.add(e);
-    filePaths.value = List<String>.from(paths);
+    final texts = await box.read('userTexts') as List;
     userTexts.value = texts.map((e) => UserText.fromJson(e)).toList();
   }
 
   Future<void> _saveFilePaths() async {
-    await box.write('filePaths', filePaths.toList());
     await box.write('userTexts', userTexts.map((e) => e.toJson()).toList());
   }
 
   Future<void> addFilePath(String filePath) async {
-    filePaths.add(filePath);
     final file = File(filePath);
     final text = await file.readAsLines();
     final title = file.path;
@@ -48,7 +40,6 @@ class HomeController extends GetxController {
   }
 
   Future<void> removeFilePath(int index) async {
-    filePaths.removeAt(index);
     userTexts.removeAt(index);
     await _saveFilePaths();
   }

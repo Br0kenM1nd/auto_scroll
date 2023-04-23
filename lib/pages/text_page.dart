@@ -1,55 +1,20 @@
-import 'dart:io';
-
+import 'package:auto_scroll/widgets/speed_regulator.dart';
 import 'package:flutter/material.dart';
-import 'package:marquee/marquee.dart';
 
-class TextFileViewer extends StatefulWidget {
-  final String filePath;
+import '../entity/user_text.dart';
+import '../widgets/infinity_text/infinity_text.dart';
 
-  const TextFileViewer({Key? key, required this.filePath}) : super(key: key);
+class TextPage extends StatelessWidget {
+  final UserText userText;
 
-  @override
-  State<TextFileViewer> createState() => _TextFileViewerState();
-}
-
-class _TextFileViewerState extends State<TextFileViewer> {
-  List<String> _fileLines = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // Чтение файла при инициализации состояния
-    _readFile();
-  }
-
-  Future<void> _readFile() async {
-    // Чтение файла по пути, переданному в качестве аргумента
-    String fileContents = await File(widget.filePath).readAsString();
-    // Разбиение содержимого файла на строки
-    _fileLines = fileContents.split('\n');
-    setState(() {});
-  }
+  const TextPage(this.userText, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Viewer'),
-      ),
-      body: ListView.builder(
-        itemCount: _fileLines.length,
-        itemBuilder: (BuildContext context, int index) {
-          // Использование MarqueeText для создания автоматически прокручиваемого текста
-          return Marquee(
-            text: _fileLines[index],
-            style: TextStyle(fontSize: 18),
-            velocity: 30,
-            blankSpace: 100,
-            pauseAfterRound: Duration(seconds: 1),
-            startPadding: 10,
-          );
-        },
-      ),
+      appBar: AppBar(title: const Text('Viewer')),
+      body: ScrollingText(text: userText.text, scrollSpeed: 30),
+      floatingActionButton: const SpeedRegulator(),
     );
   }
 }
