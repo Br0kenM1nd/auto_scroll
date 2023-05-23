@@ -12,8 +12,8 @@ class TextPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Viewer')),
-      body: ScrollingText(text: userText.text, scrollSpeed: 30),
+      appBar: AppBar(title: Text(userText.title)),
+      body: ScrollingText(userText),
       floatingActionButton: const SpeedRegulator(),
     );
   }

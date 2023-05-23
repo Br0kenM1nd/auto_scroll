@@ -20,7 +20,7 @@ UserText _$UserTextFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserText {
-  String get title => throw _privateConstructorUsedError;
+  String get dir => throw _privateConstructorUsedError;
   List<String> get text => throw _privateConstructorUsedError;
   int get speed => throw _privateConstructorUsedError;
   @JsonKey(
@@ -39,7 +39,7 @@ abstract class $UserTextCopyWith<$Res> {
       _$UserTextCopyWithImpl<$Res, UserText>;
   @useResult
   $Res call(
-      {String title,
+      {String dir,
       List<String> text,
       int speed,
       @JsonKey(fromJson: TextStyleExtension.fromJson, toJson: TextStyleExtension.toJson)
@@ -59,15 +59,15 @@ class _$UserTextCopyWithImpl<$Res, $Val extends UserText>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? dir = null,
     Object? text = null,
     Object? speed = null,
     Object? style = null,
   }) {
     return _then(_value.copyWith(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      dir: null == dir
+          ? _value.dir
+          : dir // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
           ? _value.text
@@ -93,7 +93,7 @@ abstract class _$$_UserTextCopyWith<$Res> implements $UserTextCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String title,
+      {String dir,
       List<String> text,
       int speed,
       @JsonKey(fromJson: TextStyleExtension.fromJson, toJson: TextStyleExtension.toJson)
@@ -111,15 +111,15 @@ class __$$_UserTextCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? dir = null,
     Object? text = null,
     Object? speed = null,
     Object? style = null,
   }) {
     return _then(_$_UserText(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      dir: null == dir
+          ? _value.dir
+          : dir // ignore: cast_nullable_to_non_nullable
               as String,
       text: null == text
           ? _value._text
@@ -139,20 +139,21 @@ class __$$_UserTextCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserText implements _UserText {
+class _$_UserText extends _UserText {
   const _$_UserText(
-      {required this.title,
+      {required this.dir,
       required final List<String> text,
       required this.speed,
       @JsonKey(fromJson: TextStyleExtension.fromJson, toJson: TextStyleExtension.toJson)
           required this.style})
-      : _text = text;
+      : _text = text,
+        super._();
 
   factory _$_UserText.fromJson(Map<String, dynamic> json) =>
       _$$_UserTextFromJson(json);
 
   @override
-  final String title;
+  final String dir;
   final List<String> _text;
   @override
   List<String> get text {
@@ -170,7 +171,7 @@ class _$_UserText implements _UserText {
 
   @override
   String toString() {
-    return 'UserText(title: $title, text: $text, speed: $speed, style: $style)';
+    return 'UserText(dir: $dir, text: $text, speed: $speed, style: $style)';
   }
 
   @override
@@ -178,7 +179,7 @@ class _$_UserText implements _UserText {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UserText &&
-            (identical(other.title, title) || other.title == title) &&
+            (identical(other.dir, dir) || other.dir == dir) &&
             const DeepCollectionEquality().equals(other._text, _text) &&
             (identical(other.speed, speed) || other.speed == speed) &&
             (identical(other.style, style) || other.style == style));
@@ -186,7 +187,7 @@ class _$_UserText implements _UserText {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title,
+  int get hashCode => Object.hash(runtimeType, dir,
       const DeepCollectionEquality().hash(_text), speed, style);
 
   @JsonKey(ignore: true)
@@ -203,18 +204,19 @@ class _$_UserText implements _UserText {
   }
 }
 
-abstract class _UserText implements UserText {
+abstract class _UserText extends UserText {
   const factory _UserText(
-      {required final String title,
+      {required final String dir,
       required final List<String> text,
       required final int speed,
       @JsonKey(fromJson: TextStyleExtension.fromJson, toJson: TextStyleExtension.toJson)
           required final TextStyle style}) = _$_UserText;
+  const _UserText._() : super._();
 
   factory _UserText.fromJson(Map<String, dynamic> json) = _$_UserText.fromJson;
 
   @override
-  String get title;
+  String get dir;
   @override
   List<String> get text;
   @override

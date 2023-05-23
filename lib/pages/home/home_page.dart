@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../add_text_page.dart';
+import 'add_text/add_text_page.dart';
 import '../text_page.dart';
 import 'text_controller.dart';
 
@@ -10,7 +10,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.put(HomeController());
+    final c = Get.put(TextController());
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
           itemBuilder: (context, index) => ListTile(
             onLongPress: () => c.removeFilePath(index),
             onTap: () => Get.to(() => TextPage(c.userTexts[index])),
-            title: Text(c.userTexts[index].title.split('/').last),
+            title: Text(c.userTexts[index].title),
           ),
         ),
       ),

@@ -7,48 +7,49 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../entity/user_text.dart';
 
-class HomeController extends GetxController {
+class TextController extends GetxController {
   final box = GetStorage();
   final userTexts = <UserText>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    _loadFilePaths();
+    _loadTexts();
   }
 
-  Future<void> _loadFilePaths() async {
-    final texts = await box.read('userTexts') as List;
-    userTexts.value = texts.map((e) => UserText.fromJson(e)).toList();
+  Future<void> _loadTexts() async {
+    final texts = await box.read('userTexts') as List?;
+    if (texts == null) return;
+    userTexts.addAll(texts.map((e) => UserText.fromJson(e)));
   }
 
-  Future<void> _saveFilePaths() async {
+  Future<void> saveTexts() async {
     await box.write('userTexts', userTexts.map((e) => e.toJson()).toList());
   }
 
-  Future<void> addFilePath(String filePath) async {
+  Future<void> addTextFromFile(String filePath) async {
     final file = File(filePath);
     final text = await file.readAsLines();
-    final title = file.path;
+    final dir = file.path;
     userTexts.add(UserText(
       text: text,
-      title: title,
+      dir: dir,
       style: Params.style,
       speed: Params.speed,
     ));
-    await _saveFilePaths();
+    saveTexts();
   }
 
   Future<void> removeFilePath(int index) async {
     userTexts.removeAt(index);
-    await _saveFilePaths();
+    await saveTexts();
   }
 
   Future<void> pickFiles() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       for (final file in result.files) {
-        if (file.path != null) await addFilePath(file.path!);
+        if (file.path != null) await addTextFromFile(file.path!);
       }
     }
   }

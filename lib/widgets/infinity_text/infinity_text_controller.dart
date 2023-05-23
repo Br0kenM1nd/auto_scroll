@@ -29,12 +29,35 @@ class InfinityTextController extends GetxController {
   void increaseSpeed() {
     scrollSpeed.value++;
     Params.speed++;
+    scrollSwitch();
+    scrollSwitch();
+  }
+
+  void increaseSpeed5() {
+    scrollSpeed.value += 5;
+    Params.speed += 5;
+    scrollSwitch();
+    scrollSwitch();
   }
 
   void decreaseSpeed() {
     if (scrollSpeed.value < 2) return;
     scrollSpeed.value--;
     Params.speed--;
+    scrollSwitch();
+    scrollSwitch();
+  }
+
+  void decreaseSpeed5() {
+    if (scrollSpeed.value < 7) {
+      scrollSpeed.value = 1;
+      Params.speed = 1;
+      return;
+    }
+    scrollSpeed.value -= 5;
+    Params.speed -= 5;
+    scrollSwitch();
+    scrollSwitch();
   }
 
   void _delayedStart(_) {
@@ -46,17 +69,26 @@ class InfinityTextController extends GetxController {
   }
 
   void _scroll() async {
-    while (isScroll.value) {
-      final maxExtent = scrollController.position.maxScrollExtent;
-      if (scrollController.hasClients && maxExtent > 0 && maxExtent.isFinite) {
-        await scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: Duration(seconds: maxExtent ~/ scrollSpeed.value),
-          curve: Curves.linear,
-        );
-      }
-      // Check the value of isScroll every 100 milliseconds.
-      await Future.delayed(const Duration(milliseconds: 100));
-    }
+    await _animateScroll();
   }
+
+  Future<void> _animateScroll() async {
+    if (_isCanScroll()) {
+      await scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: Duration(
+          seconds:
+              scrollController.position.maxScrollExtent ~/ scrollSpeed.value,
+        ),
+        curve: Curves.linear,
+      );
+    }
+    // Check the value of isScroll every 100 milliseconds.
+    await Future.delayed(const Duration(milliseconds: 100));
+  }
+
+  bool _isCanScroll() =>
+      scrollController.hasClients &&
+      scrollController.position.maxScrollExtent > 0 &&
+      scrollController.position.maxScrollExtent.isFinite;
 }

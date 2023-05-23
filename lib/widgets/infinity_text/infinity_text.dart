@@ -1,34 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../entity/user_text.dart';
 import 'infinity_text_controller.dart';
 
 class ScrollingText extends StatelessWidget {
-  final List<String> text;
-  final int scrollSpeed;
-  final double spacing;
-  final TextStyle textStyle;
+  final UserText userText;
 
-  const ScrollingText({
-    required this.text,
-    this.scrollSpeed = 30,
-    this.spacing = 0,
-    this.textStyle = const TextStyle(fontSize: 16),
-    Key? key,
-  }) : super(key: key);
+  const ScrollingText(this.userText, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.put(InfinityTextController(scrollSpeed));
+    final c = Get.put(InfinityTextController(userText.speed));
     return GestureDetector(
       onTap: c.scrollSwitch,
       child: ListView.builder(
         controller: c.scrollController,
-        itemCount: text.length,
-        itemBuilder: (BuildContext context, int index) => Padding(
-          padding: EdgeInsets.symmetric(vertical: spacing),
-          child: Text(text[index], style: textStyle),
-        ),
+        itemCount: userText.text.length,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+        itemBuilder: (_, i) => Text(userText.text[i], style: userText.style),
       ),
     );
   }

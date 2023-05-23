@@ -10,7 +10,7 @@ part 'user_text.g.dart';
 @freezed
 class UserText with _$UserText {
   const factory UserText({
-    required String title,
+    required String dir,
     required List<String> text,
     required int speed,
     @JsonKey(
@@ -24,4 +24,9 @@ class UserText with _$UserText {
       _$UserTextFromJson(json);
 
   const UserText._();
+
+  String get title {
+    final list = dir.split('/').last.split('.')..removeLast();
+    return list.join('.');
+  }
 }
